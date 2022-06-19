@@ -5,6 +5,14 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body * {
+    display: flex;
+}
+
+.d-none {
+    display: none;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -13,7 +21,6 @@ body {
 
 header {
     padding: 8px;
-    display: flex;
     justify-content: center;
     align-items: center;
     font-weight: 700;
@@ -23,7 +30,6 @@ header {
 
 main {
     flex: 1;
-    display: flex;
     flex-direction: row;
 }
 
@@ -39,8 +45,19 @@ section {
     background-color: #329191;
 }
 
-.section-login {
-    display: flex;
+.login-stage {
+    flex: 1;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.login-stage button {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.login-stage p {
+    font-weight: 700;
+    font-size: 18px;
 }
