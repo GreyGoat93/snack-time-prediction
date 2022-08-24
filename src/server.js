@@ -3,8 +3,11 @@ const cors = require("cors");
 const path = require("path");
 const ws = require("ws");
 const fs = require("fs");
+const users = require("../storage/users.json");
 const Connections = require("./utils/connections");
 const messageHandler = require("./utils/messageReceiver");
+const messageSender = require("./utils/messageSender");
+const { getState } = require("./utils/game");
 
 const app = express();
 app.use(cors());
@@ -21,6 +24,23 @@ app.get("/", (req, res) => {
 
 app.get("/c", (req, res) => {
     res.send(Connections.connections);
+})
+
+app.get("/admin", (req, res) => {
+    res.send("ADMİN TAHA HOŞGELDİN KRAL");
+})
+
+app.get("/stats", (req, res) => {
+    const statsArray = users.reduce((prev, curr) => {
+        prev.push(curr.score + " | " + curr.username + " | " + curr.lastPrediction)
+        return prev;
+    }, []);
+    const statsHTML = `
+        <div>
+            ${statsArray.map(stat => `<p>${stat}</p>`)}
+        </div>
+    `
+    res.send(statsHTML);
 })
 
 app.listen(2424, () => {
@@ -55,10 +75,15 @@ wss.on("connection", (wsc) => {
     })
 
     wsc.on("message", (data) => {
+        console.log(data);
         messageHandler(wss, connectionId, data);
     })
+
+    messageSender(connectionId, "STATE", getState());
 })
 
 wss.on("error", (err) => {
     console.log(err);
 })
+
+Connections.setServer(wss);

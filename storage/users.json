@@ -1,12 +1,1 @@
-[
-    {
-        "username": "taha",
-        "password": "yozgat",
-        "score": 0
-    },
-    {
-        "username": "burak",
-        "password": "refahiye24",
-        "score": 0
-    }
-]
+[{"username":"taha","password":"yozgat","score":0,"lastPrediction":"15:28:31"},{"username":"burak","password":"refahiye24","score":0,"lastPrediction":"15:24:31"}]

@@ -45,19 +45,19 @@ section {
     background-color: #329191;
 }
 
-.login-stage {
+.inner-section {
     flex: 1;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.login-stage button {
+.inner-section button {
     padding: 0.5rem;
     cursor: pointer;
 }
 
-.login-stage p {
+.inner-section p {
     font-weight: 700;
     font-size: 18px;
 }
