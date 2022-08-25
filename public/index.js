@@ -48,12 +48,17 @@ const GAME_FINISHED = "GAME_FINISHED";
     const sectionTwoInnerSections = document.querySelectorAll(".section-two .inner-section");
     const loginButtonOne = document.querySelector("#login_button-one");
     const loginButtonTwo = document.querySelector("#login_button-two");
-    const inputOne = document.querySelector("#player_one-input");
-    const inputTwo = document.querySelector("#player_two-input");
+    const inputHourOne = document.querySelector("#player_one-input-hour");
+    const inputHourTwo = document.querySelector("#player_two-input-hour");
+    const inputMinuteOne = document.querySelector("#player_one-input-minute");
+    const inputMinuteTwo = document.querySelector("#player_two-input-minute");
+    const inputSecondOne = document.querySelector("#player_one-input-second");
+    const inputSecondTwo = document.querySelector("#player_two-input-second");
     const submitButtonOne = document.querySelector("#player_one-button");
     const submitButtonTwo = document.querySelector("#player_two-button");
     const predictionOne = document.querySelector("#prediction-one");
     const predictionTwo = document.querySelector("#prediction-two");
+    const lineDOM = document.querySelector("#line");
 
     const dNoneEverySectionOne = () => {
         sectionOneInnerSections.forEach(section => {
@@ -83,22 +88,54 @@ const GAME_FINISHED = "GAME_FINISHED";
         })
     }
 
-    submitButtonOne.onclick = () => {
-        const value = inputOne.value;
-        console.log(value);
-        wscSend("S_PREDICTION", {
-            playerWho: playerWho,
-            prediction: value,
+    const valueToDecentTime = (value) => {
+        const [hour, minute, second] = value.split(":");
+        const arr = [hour, minute, second];
+        const newArr = arr.map((item) => {
+            const length = item.length;
+            if(length === 0) return "00";
+            else if(length === 1) return `0${item}`
+            else return item;
         })
+        return `${newArr[0]}:${newArr[1]}:${newArr[2]}`;
+    }
+
+    const decentTimeToDate = (time) => {
+        const [hour, minute, second] = time.split(":");
+        const date = new Date(1970, 1, 1, parseInt(hour), parseInt(minute), parseInt(second));
+        return date;
+    }
+
+    const medianOfTwoDates = (dateOne, dateTwo) => {
+        return new Date((dateOne.getTime() + dateTwo.getTime()) / 2);
+    }
+
+    const dateToTimeString = (date) => {
+        return date.toTimeString().slice(0, 8);
+    }
+
+    submitButtonOne.onclick = () => {
+        const value = valueToDecentTime(inputHourOne.value + ":" + inputMinuteOne.value + ":" + inputSecondOne.value);
+        const confirmation = confirm("EMİN MİSİN BAK???")
+        if(confirmation) {
+            console.log(value);
+            wscSend("S_PREDICTION", {
+                playerWho: playerWho,
+                prediction: value,
+            })
+        }
     }
 
     submitButtonTwo.onclick = () => {
-        const value = inputTwo.value;
-        console.log(value);
-        wscSend("S_PREDICTION", {
-            playerWho: playerWho,
-            prediction: value,
-        })
+        const value = valueToDecentTime(inputHourTwo.value + ":" + inputMinuteTwo.value + ":" + inputSecondTwo.value); 
+        const confirmation = confirm("EMİN MİSİN BAK???")
+        if(confirmation) {
+            console.log(value);
+            wscSend("S_PREDICTION", {
+                playerWho: playerWho,
+                prediction: value,
+            })
+        }
     }
 
     const loginErrorHandler = () => {
@@ -111,6 +148,15 @@ const GAME_FINISHED = "GAME_FINISHED";
     }
 
     const stateHandler = (data) => {
+        if(data.gameState === GAME_FINISHED){
+            const predictionOne = decentTimeToDate(data.players[0].prediction);
+            const predictionTwo = decentTimeToDate(data.players[1].prediction);
+            const median = medianOfTwoDates(predictionOne, predictionTwo);
+            const medianTime = dateToTimeString(median);
+            lineDOM.innerText = medianTime;
+            lineDOM.classList.remove("d-none");
+        }
+
         data.players.forEach((player, index) => {
             if(data.gameState === WAITING_FOR_PLAYERS_LOGGED_IN) {
                 if(loggedIn){

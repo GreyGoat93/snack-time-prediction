@@ -61,3 +61,17 @@ section {
     font-weight: 700;
     font-size: 18px;
 }
+
+.line {
+    padding: 16px 64px;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    background-color: black;
+    font-size: 40px;
+    font-weight: 800;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}

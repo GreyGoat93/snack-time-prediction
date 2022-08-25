@@ -41,7 +41,9 @@
                     <p>TAHA</p>
                     <p>tahmin gir</p>
                     <div>
-                        <input id="player_one-input"/>
+                        <input id="player_one-input-hour" type="number" min="0" max="23" value="15" />
+                        <input id="player_one-input-minute" type="number" min="0" max="59" value="0" />
+                        <input id="player_one-input-second" type="number" min="0" max="59" value="0" />
                         <button id="player_one-button">
                             ok    
                         </button>
@@ -99,7 +101,9 @@
                     <p>BURAK</p>
                     <p>tahmin gir</p>
                     <div>
-                        <input id="player_two-input"/>
+                        <input id="player_two-input-hour" type="number" min="0" max="23" value="15" />
+                        <input id="player_two-input-minute" type="number" min="0" max="59" value="0" />
+                        <input id="player_two-input-second" type="number" min="0" max="59" value="0" />
                         <button id="player_two-button">
                             ok    
                         </button>
@@ -129,6 +133,9 @@
             <!-- DID PREDICT -->
         </section>
     </main>
+    <div class="line d-none" id="line">
+        15:30:40
+    </div>
     <script src="/public/index.js"></script>
 </body>
 </html>
